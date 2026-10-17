@@ -508,7 +508,14 @@ is_gpu_blocklisted(const char *desc)
      * same silicon, so match anywhere rather than on the prefix.
      *
      * Xclipse and PowerVR failures can wedge both ggml and HWUI in the shared
-     * GPU driver, resulting in an application ANR. */
+     * GPU driver, resulting in an application ANR.
+     *
+     * Allow Adreno 750 (Snapdragon 8 Gen 3, e.g. Galaxy S24 Ultra) to run Vulkan. */
+    if (strstr(desc, "Adreno (TM) 750") != NULL || strstr(desc, "Adreno 750") != NULL)
+    {
+        return false;
+    }
+
     return strstr(desc, "Adreno") != NULL ||
            strstr(desc, "Xclipse") != NULL ||
            strstr(desc, "PowerVR") != NULL;
